@@ -15,5 +15,5 @@ class classifier:
 same_class_probabilities = tf.matmul(classifier.layers[-1], tf.transpose(classifier.layers[-1]))
 log_same_class = tf.log(same_class_probabilities)
 sameness = tf.placeholder(tf.float32, shape=(None, None))
-loss = tf.reduce_mean(tf.multiply(log_same_class, sameness))
+loss = -tf.reduce_mean(tf.multiply(log_same_class, sameness))
 optimizer = tf.train.AdamOptimizer(.01).minimize(loss)

@@ -8,7 +8,7 @@ num_classes = 2
 num_constraints = 20
 
 
-points, classes = make_moons(num_examples)
+examples, classes = make_moons(num_examples)
 
 sameness = np.identity(num_examples) # must link each point with itself
 for i in range(num_constraints):
@@ -25,6 +25,6 @@ for i in range(num_constraints):
 
 def batch(size=num_examples):
     included_ids = np.random.choice(num_examples, size=size, replace=False)
-    included_points = points[included_ids]
+    included_examples = examples[included_ids]
     included_sameness = sameness[included_ids][:, included_ids]
-    return included_points, included_sameness
+    return included_examples, included_sameness

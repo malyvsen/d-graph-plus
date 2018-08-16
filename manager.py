@@ -6,7 +6,6 @@ import data
 
 # training hyperparameters
 batch_size = 100
-constraint_ratio = .25
 
 
 sess = tf.InteractiveSession()

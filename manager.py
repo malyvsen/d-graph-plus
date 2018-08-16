@@ -1,3 +1,4 @@
+import numpy as np
 import tensorflow as tf
 import model
 import data
@@ -20,6 +21,11 @@ def train(num_episodes=1024):
 
 def predict(examples):
     return sess.run(model.classifier.layers[-1], feed_dict={model.inputs: examples})
+
+
+def classify(examples):
+    predictions = predict(examples)
+    return np.argmax(predictions, axis=-1)
 
 
 def eval():

@@ -22,6 +22,12 @@ def visualize(res=(64, 64)):
 
     # plot and show
     plt.imshow(bg, zorder=0, interpolation='gaussian', extent=extent)
-    plt.scatter(data.examples[data.classes == 0][:, 0], data.examples[data.classes == 0][:, 1], c='r', zorder=1)
-    plt.scatter(data.examples[data.classes == 1][:, 0], data.examples[data.classes == 1][:, 1], c='b', zorder=1)
+    for pair in data.must_link:
+        pair_examples = data.examples[np.array(pair)]
+        plt.plot(pair_examples[:, 0], pair_examples[:, 1], c='k', zorder=1)
+    for pair in data.cannot_link:
+        pair_examples = data.examples[np.array(pair)]
+        plt.plot(pair_examples[:, 0], pair_examples[:, 1], c='w', zorder=1)
+    plt.scatter(data.examples[data.classes == 0][:, 0], data.examples[data.classes == 0][:, 1], c='r', zorder=2)
+    plt.scatter(data.examples[data.classes == 1][:, 0], data.examples[data.classes == 1][:, 1], c='b', zorder=2)
     plt.show()

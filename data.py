@@ -6,7 +6,7 @@ num_examples = 100
 num_attributes = 2
 num_classes = 2
 num_must = 10
-num_cannot = 20
+num_cannot = 10
 
 
 examples, classes = make_moons(num_examples)

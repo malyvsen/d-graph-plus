@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.datasets import make_moons
 
 
-num_examples = 64
+num_examples = 32
 num_attributes = 2
 num_classes = 2
 num_must = 12

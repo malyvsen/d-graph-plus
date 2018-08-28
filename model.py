@@ -6,6 +6,9 @@ inputs = tf.placeholder(tf.float32, shape=(None, data.num_attributes))
 
 class classifier:
     layers = [inputs]
+    layers.append(tf.layers.dense(inputs=layers[-1], units=8, activation=tf.nn.relu))
+    layers.append(tf.layers.dense(inputs=layers[-1], units=8, activation=tf.nn.relu))
+    layers.append(tf.layers.dense(inputs=layers[-1], units=8, activation=tf.nn.relu))
     layers.append(tf.layers.dense(inputs=layers[-1], units=data.num_classes, activation=tf.nn.softmax))
 
 # maximize/minimize the probability that i and j are in the same class

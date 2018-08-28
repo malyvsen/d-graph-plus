@@ -43,8 +43,8 @@ def sameness(a, b):
     if (a, b) in must_link or (b, a) in must_link:
         return 1
     if (a, b) in cannot_link or (b, a) in cannot_link:
-        return -1
-    return rbf(a, b) * 1e-1
+        return -2
+    return (rbf(a, b) - 1) * 1e-1
 
 
 def batch(size=num_examples):

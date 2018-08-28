@@ -5,7 +5,7 @@ import data
 
 
 # training hyperparameters
-batch_size = 64
+batch_size = data.num_examples
 
 
 sess = tf.InteractiveSession()

@@ -31,8 +31,6 @@ while len(cannot_link) < num_cannot:
 
 
 def sameness(a, b):
-    if a == b:
-        return 1
     if (a, b) in must_link or (b, a) in must_link:
         return 1
     if (a, b) in cannot_link or (b, a) in cannot_link:

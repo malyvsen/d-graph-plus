@@ -30,12 +30,21 @@ while len(cannot_link) < num_cannot:
     cannot_link.append((a, b))
 
 
+def rbf(a, b):
+    '''a measure of similarity between examples a and b'''
+    return np.exp(-np.sum(np.square(a - b)))
+
+
 def sameness(a, b):
+    '''
+    a measure of similarity between examples with ids a and b
+    takes expert knowledge into account
+    '''
     if (a, b) in must_link or (b, a) in must_link:
         return 1
     if (a, b) in cannot_link or (b, a) in cannot_link:
         return -1
-    return 0
+    return rbf(a, b) * 1e-1
 
 
 def batch(size=num_examples):

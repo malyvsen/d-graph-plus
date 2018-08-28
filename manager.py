@@ -12,7 +12,7 @@ sess = tf.InteractiveSession()
 sess.run(tf.global_variables_initializer())
 
 
-def train(num_episodes=1024):
+def train(num_episodes=4096):
     for episode in range(num_episodes):
         examples, sameness = data.batch(size=batch_size)
         sess.run(model.optimizer, feed_dict={model.inputs: examples, model.sameness: sameness})

@@ -16,4 +16,4 @@ class classifier:
 same_class_probabilities = tf.matmul(classifier.layers[-1], tf.transpose(classifier.layers[-1]))
 sameness = tf.placeholder(tf.float32, shape=(None, None)) # values of w from the original paper
 loss = -tf.reduce_sum(tf.multiply(same_class_probabilities, sameness))
-optimizer = tf.train.AdamOptimizer(1e-2).minimize(loss)
+optimizer = tf.train.AdamOptimizer(1e-4).minimize(loss)

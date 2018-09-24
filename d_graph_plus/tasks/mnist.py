@@ -6,8 +6,10 @@ from tensorflow.keras.datasets import mnist
 # dataset
 image_dim = 28
 num_classes = 10
+num_kept = 4096
 
 (examples, classes), (_, _) = mnist.load_data()
+examples, classes = examples[:num_kept], classes[:num_kept] # they are already shuffled, no worries
 examples = examples / 255.0
 
 
@@ -15,7 +17,8 @@ examples = examples / 255.0
 num_must = 1024
 num_cannot = 1024
 batch_size = 128
-learning_rate = 1e-4
+learning_rate = 4e-4
+num_episodes = 1024
 
 
 class model:

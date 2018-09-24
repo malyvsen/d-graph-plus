@@ -1,5 +1,5 @@
 import numpy as np
-from tasks import current as task
+from d_graph_plus.tasks import current as task
 
 
 print(f'Preparing {task.num_must} must-link pairs...')

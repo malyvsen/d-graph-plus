@@ -1,11 +1,8 @@
-import numpy as np
-from manager import train, eval
-import visualize
-from tasks import current as task
+import d_graph_plus
 
 
-print('Pre-training loss: ' + str(eval()))
-train()
+print('Pre-training loss: ' + str(d_graph_plus.eval()))
+d_graph_plus.train()
 print('Training done.')
-print('Post-training loss: ' + str(eval()))
-visualize.correlation()
+print('Post-training loss: ' + str(d_graph_plus.eval()))
+d_graph_plus.visualize.correlation()

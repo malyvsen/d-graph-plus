@@ -1,16 +1,16 @@
 import numpy as np
 import tensorflow as tf
 from tqdm import trange
-import optimizer
-from tasks import current as task
-import data
+import d_graph_plus.optimizer as optimizer
+from d_graph_plus.tasks import current as task
+import d_graph_plus.data as data
 
 
 sess = tf.InteractiveSession()
 sess.run(tf.global_variables_initializer())
 
 
-def train(num_episodes=4096):
+def train(num_episodes=task.num_episodes):
     print('Training...')
     for episode in trange(num_episodes):
         examples, sameness = data.batch(size=task.batch_size)

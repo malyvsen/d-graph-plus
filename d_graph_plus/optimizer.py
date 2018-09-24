@@ -1,5 +1,5 @@
 import tensorflow as tf
-from tasks import current as task
+from d_graph_plus.tasks import current as task
 
 
 # maximize/minimize the probability that i and j are in the same class

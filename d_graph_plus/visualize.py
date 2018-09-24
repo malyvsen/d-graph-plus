@@ -1,8 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from data import batch
-from manager import predict
-from tasks import current as task
+from d_graph_plus.data import batch
+from d_graph_plus.manager import predict
+from d_graph_plus.tasks import current as task
 
 
 def correlation():

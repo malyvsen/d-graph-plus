@@ -2,8 +2,6 @@ import numpy as np
 import tensorflow as tf
 from sklearn.datasets import make_moons
 import matplotlib.pyplot as plt
-from ..manager import predict
-from ..data import must_link, cannot_link
 
 
 # dataset
@@ -19,6 +17,7 @@ num_must = 12
 num_cannot = 12
 batch_size = len(examples)
 learning_rate = 1e-4
+num_episodes = 4096
 
 
 class model:
@@ -28,10 +27,11 @@ class model:
     layers.append(tf.layers.dense(inputs=layers[-1], units=8, activation=tf.nn.relu))
     layers.append(tf.layers.dense(inputs=layers[-1], units=8, activation=tf.nn.relu))
     output = tf.layers.dense(inputs=layers[-1], units=num_classes, activation=tf.nn.softmax)
-    layers.append[output]
+    layers.append(output)
 
 
 def visualize(res=(64, 64)):
+    # TODO: make this available somewhere, avoiding circular import
     # calculate the box area to plot on
     left = np.min(examples[:, 0])
     right = np.max(examples[:, 0])

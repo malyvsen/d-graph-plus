@@ -10,7 +10,7 @@ num_kept = 4096
 
 (examples, classes), (_, _) = mnist.load_data()
 examples, classes = examples[:num_kept], classes[:num_kept] # they are already shuffled, no worries
-examples = examples / 255.0
+examples = examples / 255.0 # normalize all coordinates to [0, 1]
 
 
 # hyperparameters

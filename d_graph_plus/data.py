@@ -2,25 +2,25 @@ import numpy as np
 from d_graph_plus.tasks import current as task
 
 
-print(f'Preparing {task.num_must} must-link pairs...')
+print(f'Preparing {task.num_must} ground-truth must-link pairs...')
 must_link = []
 while len(must_link) < task.num_must:
     a, b = np.random.choice(len(task.examples), 2, replace=False)
     if task.classes[a] != task.classes[b]:
         continue
-    if (a, b) in must_link or (b, a) in must_link:
+    if {a, b} in must_link:
         continue
-    must_link.append((a, b))
+    must_link.append({a, b})
 
-print(f'Preparing {task.num_cannot} cannot-link pairs...')
+print(f'Preparing {task.num_cannot} ground-truth cannot-link pairs...')
 cannot_link = []
 while len(cannot_link) < task.num_cannot:
     a, b = np.random.choice(len(task.examples), 2, replace=False)
     if task.classes[a] == task.classes[b]:
         continue
-    if (a, b) in cannot_link or (b, a) in cannot_link:
+    if {a, b} in cannot_link:
         continue
-    cannot_link.append((a, b))
+    cannot_link.append({a, b})
 
 
 def rbf(a, b):
@@ -49,9 +49,9 @@ def sameness(a, b):
     a measure of similarity between examples with ids a and b
     takes expert knowledge into account
     '''
-    if (a, b) in must_link or (b, a) in must_link:
+    if {a, b} in must_link:
         return 1
-    if (a, b) in cannot_link or (b, a) in cannot_link:
+    if {a, b} in cannot_link:
         return -1
     return weight(task.examples[a], task.examples[b]) * 1e-2
 

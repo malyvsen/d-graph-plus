@@ -15,6 +15,9 @@ examples += np.random.normal(scale=5e-2, size=np.shape(examples))
 # hyperparameters
 num_must = 12
 num_cannot = 12
+neighborhood_size = 8
+auxiliary_weight = 1e-2
+regularization = 0
 batch_size = len(examples)
 learning_rate = 1e-4
 num_episodes = 4096
@@ -28,6 +31,7 @@ class model:
     layers.append(tf.layers.dense(inputs=layers[-1], units=8, activation=tf.nn.relu))
     output = tf.layers.dense(inputs=layers[-1], units=num_classes, activation=tf.nn.softmax)
     layers.append(output)
+    penalty = None # TODO: replace placeholder with actual value like for mnist
 
 
 def visualize(res=(64, 64)):

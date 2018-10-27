@@ -1,4 +1,5 @@
 import numpy as np
+from tqdm import trange, tqdm
 from d_graph_plus.tasks import current as task
 
 
@@ -23,25 +24,36 @@ while len(cannot_link) < task.num_cannot:
     cannot_link.append({a, b})
 
 
+print(f'Preparing neighborhood ranking...')
+neighborhood = []
+for example in tqdm(task.examples):
+    by_distance = sorted(range(len(task.examples)), key=lambda x: np.linalg.norm(example - task.examples[x]))
+    neighborhood.append(by_distance[1 : task.neighborhood_size + 1]) # do not include self
+# a must only be in neighborhood of b if b is in neighborhood of a
+print(f'Guaranteeing mutuality...')
+for id in trange(len(neighborhood)):
+    neighborhood[id] = list(filter(lambda x: id in neighborhood[x], neighborhood[id]))
+
+
 def rbf(a, b):
     '''
+    measure of similarity between examples with ids a and b
+    does not take neighborhood information into account
     radial basis function: https://www.wikiwand.com/en/Radial_basis_function
-    a measure of similarity between examples a and b
     '''
     gamma = 1
-    return np.exp(-gamma * np.sum(np.square(a - b)))
+    return np.exp(-gamma * np.sum(np.square(task.examples[a] - task.examples[b])))
 
 
 def weight(a, b):
     '''
-    see equation (5) in original paper
-    a measure of similarity between examples a and b
+    a measure of similarity between examples with ids a and b
+    takes neighborhood information into account
+    equation (5) in original paper
     '''
-    epsilon = 0.5
-    rbf_val = rbf(a, b)
-    if rbf_val > epsilon:
-        return 2 * rbf_val - 1
-    return 2 / task.num_classes - 1
+    if a in neighborhood[b]:
+        return 2 * rbf(a, b)
+    return 2 / task.num_classes - 1 # if not in neighborhood, assume we know nothing - equal probability over classes
 
 
 def sameness(a, b):
@@ -53,7 +65,7 @@ def sameness(a, b):
         return 1
     if {a, b} in cannot_link:
         return -1
-    return weight(task.examples[a], task.examples[b]) * 1e-2
+    return weight(a, b) * task.auxiliary_weight
 
 
 def batch(size=task.batch_size):

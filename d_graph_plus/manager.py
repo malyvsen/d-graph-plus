@@ -28,4 +28,4 @@ def classify(examples):
 
 def eval():
     examples, sameness = data.batch()
-    return sess.run(optimizer.loss, feed_dict={task.model.input: examples, optimizer.sameness: sameness})
+    return sess.run(optimizer.objective, feed_dict={task.model.input: examples, optimizer.sameness: sameness})

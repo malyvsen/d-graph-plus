@@ -16,9 +16,12 @@ examples = examples / 255.0 # normalize all coordinates to [0, 1]
 # hyperparameters
 num_must = 1024
 num_cannot = 1024
+neighborhood_size = 64
+auxiliary_weight = 1e-1
+regularization = 1e-3
 batch_size = 128
 learning_rate = 4e-4
-num_episodes = 1024
+num_episodes = 4096
 
 
 class model:
@@ -27,3 +30,4 @@ class model:
     weights = tf.Variable(tf.truncated_normal(shape=(image_dim * image_dim, num_classes)))
     biases = tf.Variable(tf.truncated_normal(shape=(num_classes,)))
     output = tf.nn.softmax(tf.matmul(flat, weights) + biases)
+    penalty = tf.reduce_sum(tf.square(weights)) # for regularization

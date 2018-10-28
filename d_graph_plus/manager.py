@@ -13,7 +13,7 @@ sess.run(tf.global_variables_initializer())
 def train(num_episodes=task.num_episodes):
     print('Training...')
     for episode in trange(num_episodes):
-        examples, sameness = data.batch(size=task.batch_size)
+        examples, sameness = data.batch()
         sess.run(optimizer.optimizer, feed_dict={task.model.input: examples, optimizer.sameness: sameness})
 
 

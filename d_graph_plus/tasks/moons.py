@@ -18,7 +18,9 @@ num_cannot = 12
 neighborhood_size = 8
 auxiliary_weight = 1e-2
 regularization = 0
-batch_size = len(examples)
+batch_size = len(examples) # examples
+min_batch_must = 0 # pairs of examples
+min_batch_cannot = 0 # pairs of examples
 learning_rate = 1e-4
 num_episodes = 4096
 
@@ -31,11 +33,11 @@ class model:
     layers.append(tf.layers.dense(inputs=layers[-1], units=8, activation=tf.nn.relu))
     output = tf.layers.dense(inputs=layers[-1], units=num_classes, activation=tf.nn.softmax)
     layers.append(output)
-    penalty = None # TODO: replace placeholder with actual value like for mnist
+    l2_penalty = None # TODO: replace placeholder with actual value like for mnist
 
 
 def visualize(res=(64, 64)):
-    # TODO: make this available somewhere, avoiding circular import
+    from d_graph_plus.manager import predict
     # calculate the box area to plot on
     left = np.min(examples[:, 0])
     right = np.max(examples[:, 0])

@@ -1,4 +1,5 @@
 import numpy as np
+import random
 from tqdm import trange, tqdm
 from d_graph_plus.tasks import current as task
 
@@ -68,8 +69,15 @@ def sameness(a, b):
     return weight(a, b) * task.auxiliary_weight
 
 
-def batch(size=task.batch_size):
-    included_ids = np.random.choice(len(task.examples), size=size, replace=False)
+def batch():
+    included_ids = set()
+    for pair in random.sample(must_link, task.min_batch_must):
+        included_ids |= pair
+    for pair in random.sample(cannot_link, task.min_batch_cannot):
+        included_ids |= pair
+    while len(included_ids) < task.batch_size:
+        included_ids.add(random.randrange(len(task.examples)))
+    included_ids = np.array(list(included_ids))
     included_examples = task.examples[included_ids]
     included_sameness = np.array([[sameness(a, b) for b in included_ids] for a in included_ids])
     return included_examples, included_sameness

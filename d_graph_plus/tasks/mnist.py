@@ -33,3 +33,19 @@ class model:
     regularizer(weights)
     biases = tf.Variable(tf.truncated_normal(shape=(num_classes,)))
     output = tf.nn.softmax(tf.matmul(flat, weights) + biases)
+
+
+def visualize(show=True):
+    import matplotlib.pyplot as plt
+    from d_graph_plus.manager import sess
+
+    fig, axes = plt.subplots(ncols=num_classes, nrows=1)
+    weights = sess.run(model.weights)
+    for i in range(num_classes):
+        class_weights = weights[:, i]
+        axes.ravel()[i].imshow(np.reshape(class_weights, (image_dim, image_dim)))
+        axes.ravel()[i].set_title(f'Bucket {i}')
+        axes.ravel()[i].set_axis_off()
+
+    if show:
+        plt.show()

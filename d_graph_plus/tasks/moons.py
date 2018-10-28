@@ -1,7 +1,6 @@
 import numpy as np
 import tensorflow as tf
 from sklearn.datasets import make_moons
-import matplotlib.pyplot as plt
 
 
 # dataset
@@ -17,7 +16,7 @@ num_must = 12
 num_cannot = 12
 neighborhood_size = 8
 auxiliary_weight = 1e-2
-regularization = 0
+regularizer = tf.contrib.layers.l2_regularizer(0.0)
 batch_size = len(examples) # examples
 min_batch_must = 0 # pairs of examples
 min_batch_cannot = 0 # pairs of examples
@@ -28,16 +27,20 @@ num_episodes = 4096
 class model:
     input = tf.placeholder(tf.float32, shape=(None, num_attributes))
     layers = [input]
-    layers.append(tf.layers.dense(inputs=layers[-1], units=8, activation=tf.nn.relu))
-    layers.append(tf.layers.dense(inputs=layers[-1], units=8, activation=tf.nn.relu))
-    layers.append(tf.layers.dense(inputs=layers[-1], units=8, activation=tf.nn.relu))
-    output = tf.layers.dense(inputs=layers[-1], units=num_classes, activation=tf.nn.softmax)
+    layers.append(tf.layers.dense(inputs=layers[-1], units=8, activation=tf.nn.relu, kernel_regularizer=regularizer))
+    layers.append(tf.layers.dense(inputs=layers[-1], units=8, activation=tf.nn.relu, kernel_regularizer=regularizer))
+    layers.append(tf.layers.dense(inputs=layers[-1], units=8, activation=tf.nn.relu, kernel_regularizer=regularizer))
+    output = tf.layers.dense(inputs=layers[-1], units=num_classes, activation=tf.nn.softmax, kernel_regularizer=regularizer)
     layers.append(output)
-    l2_penalty = None # TODO: replace placeholder with actual value like for mnist
 
 
-def visualize(res=(64, 64)):
+def visualize(show=True, res=(64, 64)):
+    import matplotlib.pyplot as plt
+    plt.figure()
+    plt.title('classification space')
     from d_graph_plus.manager import predict
+    from d_graph_plus.data import must_link, cannot_link
+
     # calculate the box area to plot on
     left = np.min(examples[:, 0])
     right = np.max(examples[:, 0])
@@ -56,11 +59,12 @@ def visualize(res=(64, 64)):
     # plot and show
     plt.imshow(bg, zorder=0, interpolation='gaussian', extent=extent)
     for pair in must_link:
-        pair_examples = examples[np.array(pair)]
+        pair_examples = examples[np.array(list(pair))]
         plt.plot(pair_examples[:, 0], pair_examples[:, 1], c='k', zorder=1)
     for pair in cannot_link:
-        pair_examples = examples[np.array(pair)]
+        pair_examples = examples[np.array(list(pair))]
         plt.plot(pair_examples[:, 0], pair_examples[:, 1], c='w', zorder=1)
     plt.scatter(examples[classes == 0][:, 0], examples[classes == 0][:, 1], c='r', zorder=2)
     plt.scatter(examples[classes == 1][:, 0], examples[classes == 1][:, 1], c='b', zorder=2)
-    plt.show()
+    if show:
+        plt.show()

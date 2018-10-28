@@ -18,7 +18,7 @@ num_must = 1024
 num_cannot = 1024
 neighborhood_size = 64
 auxiliary_weight = 1e-1
-regularization = 1e-3
+regularizer = tf.contrib.layers.l2_regularizer(1e-3)
 batch_size = 128 # examples
 min_batch_must = 16 # pairs of examples
 min_batch_cannot = 16 # pairs of examples
@@ -30,6 +30,6 @@ class model:
     input = tf.placeholder(tf.float32, shape=(None, image_dim, image_dim))
     flat = tf.layers.Flatten()(input)
     weights = tf.Variable(tf.truncated_normal(shape=(image_dim * image_dim, num_classes)))
+    regularizer(weights)
     biases = tf.Variable(tf.truncated_normal(shape=(num_classes,)))
     output = tf.nn.softmax(tf.matmul(flat, weights) + biases)
-    l2_penalty = tf.reduce_sum(tf.square(weights)) # for regularization

@@ -23,7 +23,7 @@ batch_size = 128 # examples
 min_batch_must = 16 # pairs of examples
 min_batch_cannot = 16 # pairs of examples
 learning_rate = 1e-3
-num_episodes = 4096
+num_episodes = 1024
 
 
 class model:
@@ -39,7 +39,7 @@ def visualize(show=True):
     import matplotlib.pyplot as plt
     from d_graph_plus.manager import sess
 
-    fig, axes = plt.subplots(ncols=num_classes, nrows=1)
+    fig, axes = plt.subplots(ncols=5, nrows=2)
     weights = sess.run(model.weights)
     for i in range(num_classes):
         class_weights = weights[:, i]

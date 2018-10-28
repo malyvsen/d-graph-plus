@@ -53,7 +53,7 @@ def weight(a, b):
     equation (5) in original paper
     '''
     if a in neighborhood[b]:
-        return 2 * rbf(a, b)
+        return 2 * rbf(a, b) - 1
     return 2 / task.num_classes - 1 # if not in neighborhood, assume we know nothing - equal probability over classes
 
 

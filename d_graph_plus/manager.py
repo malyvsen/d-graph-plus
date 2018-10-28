@@ -8,13 +8,15 @@ import d_graph_plus.data as data
 
 sess = tf.InteractiveSession()
 sess.run(tf.global_variables_initializer())
+history = {'objective': []}
 
 
 def train(num_episodes=task.num_episodes):
     print('Training...')
     for episode in trange(num_episodes):
         examples, sameness = data.batch()
-        sess.run(optimizer.optimizer, feed_dict={task.model.input: examples, optimizer.sameness: sameness})
+        _, objective = sess.run((optimizer.optimizer, optimizer.objective), feed_dict={task.model.input: examples, optimizer.sameness: sameness})
+        history['objective'].append(objective)
 
 
 def predict(examples):

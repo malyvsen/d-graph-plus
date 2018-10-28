@@ -29,3 +29,12 @@ def classify(examples):
 def eval():
     examples, sameness = data.batch()
     return sess.run(optimizer.objective, feed_dict={task.model.input: examples, optimizer.sameness: sameness})
+
+
+def correlation_matrix():
+    output = predict(task.examples)
+    result = []
+    for class_id in range(task.num_classes):
+        class_correlation = np.mean(output[task.classes == class_id], axis=0)
+        result.append(class_correlation)
+    return np.array(result)

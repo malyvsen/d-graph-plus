@@ -42,8 +42,7 @@ def rbf(a, b):
     does not take neighborhood information into account
     radial basis function: https://www.wikiwand.com/en/Radial_basis_function
     '''
-    gamma = 1
-    return np.exp(-gamma * np.sum(np.square(task.examples[a] - task.examples[b])))
+    return np.exp(-task.gamma * np.sum(np.square(task.examples[a] - task.examples[b])))
 
 
 def weight(a, b):

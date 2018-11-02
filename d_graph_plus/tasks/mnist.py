@@ -18,6 +18,7 @@ num_must = 1024
 num_cannot = 1024
 neighborhood_size = 64
 auxiliary_weight = 1e-1
+gamma = 1 # parameter for RBF
 regularizer = tf.contrib.layers.l2_regularizer(1e-3)
 batch_size = 128 # examples
 min_batch_must = 16 # pairs of examples

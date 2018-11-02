@@ -1,6 +1,7 @@
 import numpy as np
 import tensorflow as tf
 from tqdm import trange
+from sklearn.metrics.cluster import adjusted_rand_score
 import d_graph_plus.optimizer as optimizer
 from d_graph_plus.tasks import current as task
 import d_graph_plus.data as data
@@ -28,9 +29,10 @@ def classify(examples):
     return np.argmax(predictions, axis=-1)
 
 
-def eval():
-    examples, sameness = data.batch()
-    return sess.run(optimizer.objective, feed_dict={task.model.input: examples, optimizer.sameness: sameness})
+def adjusted_rand_index():
+    '''A score for the classification - the higher, the better'''
+    classification = classify(task.examples)
+    return adjusted_rand_score(classification, task.classes)
 
 
 def correlation_matrix():

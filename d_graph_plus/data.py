@@ -36,6 +36,7 @@ for id in trange(len(neighborhood)):
     neighborhood[id] = list(filter(lambda x: id in neighborhood[x], neighborhood[id]))
 
 
+# functions used to generate sameness matrix
 def rbf(a, b):
     '''
     measure of similarity between examples with ids a and b
@@ -53,8 +54,7 @@ def weight(a, b):
     '''
     if a in neighborhood[b]:
         return 2 * rbf(a, b) - 1
-    return 2 / task.num_classes - 1 # if not in neighborhood, assume we know nothing - equal probability over classes
-
+    return float('nan') # if not in neighborhood, assume we know nothing
 
 def sameness(a, b):
     '''
@@ -68,6 +68,15 @@ def sameness(a, b):
     return weight(a, b) * task.auxiliary_weight
 
 
+print(f'Pre-computing sameness matrix...')
+sameness_matrix = np.zeros((len(task.examples), len(task.examples)), dtype=np.float32)
+for a, b in tqdm(np.ndindex(len(task.examples), len(task.examples)), total=sameness_matrix.size):
+    sameness_matrix[a, b] = sameness(a, b)
+nans = np.isnan(sameness_matrix)
+unknown = 2 / task.num_classes - 1 # (probability that two random examples are in the same class) * 2 - 1
+sameness_matrix[nans] = (unknown * sameness_matrix.size - np.nansum(sameness_matrix)) / np.count_nonzero(nans)
+
+
 def batch():
     included_ids = set()
     for pair in random.sample(must_link, task.min_batch_must):
@@ -78,5 +87,5 @@ def batch():
         included_ids.add(random.randrange(len(task.examples)))
     included_ids = np.array(list(included_ids))
     included_examples = task.examples[included_ids]
-    included_sameness = np.array([[sameness(a, b) for b in included_ids] for a in included_ids])
+    included_sameness = sameness_matrix[included_ids][:, included_ids]
     return included_examples, included_sameness

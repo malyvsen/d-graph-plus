@@ -7,17 +7,17 @@ from sklearn.datasets import make_moons
 num_attributes = 2
 num_classes = 2
 
-examples, classes = make_moons(32)
+examples, classes = make_moons(256)
 examples += np.random.normal(scale=5e-2, size=np.shape(examples))
 
 
 # hyperparameters
 num_must = 12
 num_cannot = 12
-neighborhood_size = 8
+neighborhood_size = 64
 auxiliary_weight = 1e-2
 gamma = 1 # parameter for RBF
-regularizer = tf.contrib.layers.l2_regularizer(0.0)
+regularizer = tf.contrib.layers.l2_regularizer(1e-2)
 batch_size = len(examples) # examples
 min_batch_must = 0 # pairs of examples
 min_batch_cannot = 0 # pairs of examples
@@ -28,9 +28,8 @@ num_episodes = 4096
 class model:
     input = tf.placeholder(tf.float32, shape=(None, num_attributes))
     layers = [input]
-    layers.append(tf.layers.dense(inputs=layers[-1], units=8, activation=tf.nn.relu, kernel_regularizer=regularizer))
-    layers.append(tf.layers.dense(inputs=layers[-1], units=8, activation=tf.nn.relu, kernel_regularizer=regularizer))
-    layers.append(tf.layers.dense(inputs=layers[-1], units=8, activation=tf.nn.relu, kernel_regularizer=regularizer))
+    layers.append(tf.layers.dense(inputs=layers[-1], units=16, activation=tf.nn.relu, kernel_regularizer=regularizer))
+    layers.append(tf.layers.dense(inputs=layers[-1], units=4, activation=tf.nn.relu, kernel_regularizer=regularizer))
     output = tf.layers.dense(inputs=layers[-1], units=num_classes, activation=tf.nn.softmax, kernel_regularizer=regularizer)
     layers.append(output)
 

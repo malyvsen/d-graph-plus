@@ -29,5 +29,5 @@ num_episodes = 64
 class model:
     input = tf.placeholder(tf.float32, shape=(None, num_attributes))
     layers = [input]
-    output = tf.layers.dense(inputs=layers[-1], units=num_classes, activation=tf.nn.softmax, kernel_regularizer=regularizer)
+    output = tf.layers.dense(inputs=layers[-1], units=num_classes, activation=tf.nn.softmax, kernel_regularizer=regularizer, kernel_initializer=tf.initializers.truncated_normal(stddev=0.01))
     layers.append(output)
